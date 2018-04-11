@@ -1,0 +1,11 @@
+<ActionBar class="action-bar">
+  <Label class="action-bar-title" text="Home"></Label>
+</ActionBar>
+
+<StackLayout class="page">
+  <Label *ngIf="original" [text]="'Original file size ' + original + 'MB'"></Label>
+  <Label *ngIf="message" [text]="message"></Label>
+  <Label *ngIf="compressed" [text]="'Compressed file size ' + compressed + 'MB'"></Label>
+  <Label *ngIf="percent" [text]="percent"></Label>
+  <Button text="Record and compress" (tap)="takeVideo()"></Button>
+</StackLayout>
