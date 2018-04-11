@@ -1,7 +1,7 @@
 import { Common } from './ffmpeg.common';
 
 export class FFmpeg extends Common {
-  static execute(command: string | Array<string>): Promise<void> {
+  static execute(command: string | Array<string>, debug?: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       if (typeof command === 'string') {
         command.replace('ffmpeg ', '');

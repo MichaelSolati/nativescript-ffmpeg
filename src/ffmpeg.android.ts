@@ -11,7 +11,7 @@ const bundle = com.github.hiteshsondhi88.libffmpeg;
 const ffmpeg = bundle.FFmpeg.getInstance(app.android.context);
 
 export class FFmpeg extends Common {
-  static execute(command: string | Array<string>): Promise<void> {
+  static execute(command: string | Array<string>, debug?: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       Permissions.requestPermission(
         [android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -26,19 +26,27 @@ export class FFmpeg extends Common {
           try {
             ffmpeg.loadBinary(new bundle.LoadBinaryResponseHandler());
           } catch (e) {
-            reject('FFmpeg is not supported by device');
+            return reject('FFmpeg is not supported by device');
           }
           const ExecuteBinaryResponseHandler = bundle.ExecuteBinaryResponseHandler.extend({
-            onStart: () => { },
-            onProgress: (message) => console.log(message),
-            onFailure: (message) => reject(message),
-            onSuccess: (message) => resolve(),
-            onFinish: () => { }
+            onStart: () => { if (debug) { console.log('Running FFmpeg'); } },
+            onProgress: (message) => { if (debug) { console.log(message); } },
+            onFailure: (message) => {
+              if (debug) { console.log(message); }
+              return reject(message);
+            },
+            onSuccess: (message) => {
+              if (debug) { console.log('Successfully run FFmpeg'); }
+              return resolve();
+            },
+            onFinish: () => {
+              return resolve();
+            }
           });
           try {
             ffmpeg.execute(command, new ExecuteBinaryResponseHandler());
           } catch (e) {
-            reject(`Could not execute: ${command.join(' ')}`);
+            return reject(`Could not execute: ${command.join(' ')}`);
           }
         }).catch(reject);
     });

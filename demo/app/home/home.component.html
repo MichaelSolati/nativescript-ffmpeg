@@ -7,5 +7,6 @@
   <Label *ngIf="message" [text]="message"></Label>
   <Label *ngIf="compressed" [text]="'Compressed file size ' + compressed + 'MB'"></Label>
   <Label *ngIf="percent" [text]="percent"></Label>
+  <Label *ngIf="duration" [text]="duration"></Label>
   <Button text="Record and compress" (tap)="takeVideo()"></Button>
 </StackLayout>

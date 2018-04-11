@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgZone, OnInit } from "@angular/core";
 import * as Permissions from "nativescript-permissions";
 import { FFmpeg } from "nativescript-ffmpeg";
 import { isAndroid } from "tns-core-modules/platform";
@@ -8,6 +8,14 @@ const vr = require("../tools/video-recorder");
 
 declare const android: any;
 
+function padding(input: number, length: number = 2): string {
+  let i = String(input);
+  while (i.length < length) {
+    i = '0' + i;
+  }
+  return i;
+}
+
 @Component({
   selector: "Home",
   moduleId: module.id,
@@ -15,6 +23,7 @@ declare const android: any;
 })
 export class HomeComponent implements OnInit {
   private _compressed: number;
+  private _duration: string;
   private _message: string;
   private _original: number;
   private _percent: string;
@@ -25,11 +34,9 @@ export class HomeComponent implements OnInit {
     explanation: "We need to be able to record video"
   });
 
-  constructor() {
-  }
+  constructor(private _zone: NgZone) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit() { }
 
   get compressed(): number {
     return this._compressed;
@@ -47,18 +54,37 @@ export class HomeComponent implements OnInit {
     return this._percent;
   }
 
+  get duration(): string {
+    return this._duration;
+  }
+
   private _compress(src: string): void {
     const out = src.replace(/\.[^/.]+$/, "_COMPRESSED.mp4");
-    const command: string = `-i ${src} -vcodec h264 -acodec mp3 -vf scale=320:240 ${out}`;
+    const command: string = `-i ${src} -vcodec h264 -preset ultrafast -vf scale=320:240 ${out}`;
     this._message = "Processing video";
-    FFmpeg.execute(command).then(() => {
-      this._message = null;
-      this._compressed = this._getSize(out);
-      this._percent = "Reduced by " + (100 - (this._compressed * 100 / this.original)).toFixed(2) + "%";
-    }).catch(() => this._message = "Couldn't compress video");
+    const start = Date.now();
+    FFmpeg.execute(command, true).then(() => {
+      this._zone.run(() => {
+        const end = Date.now();
+        const elapsed = end - start;
+        const difference = new Date(elapsed);
+        this._duration =
+          `Duration was ${padding(difference.getMinutes())}:${padding(difference.getSeconds())}.${padding(difference.getMilliseconds(), 3)}`
+        this._message = null;
+        this._compressed = this._getSize(out);
+        this._percent = "Reduced by " + (100 - (this._compressed * 100 / this.original)).toFixed(2) + "%";
+      });
+    }).catch(() => this._zone.run(() => this._message = "Couldn't compress video"))
+    .then(() => console.log('done'));
   }
 
   private _error(error: string | Error): Promise<void> {
+    this._original = null;
+    this._message = null;
+    this._compressed = null;
+    this._percent = null;
+    this._duration = null;
+
     return dialogs.alert({
       title: "Uh oh...",
       message: (error instanceof Error) ? error.message : error,
@@ -93,6 +119,7 @@ export class HomeComponent implements OnInit {
     this._message = null;
     this._compressed = null;
     this._percent = null;
+    this._duration = null;
     if (isAndroid) {
       Permissions.requestPermission([android.Manifest.permission.RECORD_AUDIO, android.Manifest.permission.CAMERA],
         "Demo needs Audio and Camera permissions to record a video")
