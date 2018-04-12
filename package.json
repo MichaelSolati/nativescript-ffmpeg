@@ -1,6 +1,6 @@
 {
   "name": "nativescript-ffmpeg",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A Nativescript wrapper for the FFmpeg library. (ONLY SUPPORTS ANDROID)",
   "scripts": {
     "release:major": "changelog -M && cd src && npm version major && cd ../ && git add . && git commit -m 'chore(release): major version release' && npm version major && git push origin && git push origin --tags",
