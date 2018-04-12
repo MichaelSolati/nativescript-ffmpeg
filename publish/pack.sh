@@ -20,8 +20,9 @@ pack() {
     echo 'Copying src...'
     node_modules/.bin/ncp "$SOURCE_DIR" "$TO_SOURCE_DIR"
 
-    # copy README to src
-    echo 'Copying README to /src...'
+    # copy README & LICENSE to src
+    echo 'Copying README and LICENSE to /src...'
+    node_modules/.bin/ncp "$ROOT_DIR"/LICENSE "$TO_SOURCE_DIR"/LICENSE
     node_modules/.bin/ncp "$ROOT_DIR"/README.md "$TO_SOURCE_DIR"/README.md
 
     # compile package and copy files required by npm

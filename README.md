@@ -19,7 +19,7 @@ This command automatically installs the necessary files, as well as stores `nati
 
 Function | Description
 -------------- |:---------------------------------
-`execute(command: string | Array<string>, callback?: Callback, debug?: boolean): void` | Executes a FFmpeg command. The second argument is an optional callback function (which only returns an error message). If you choose to enable the debug flag, the third argument should be set as `true` and the function will log all events during execution of the commang.
+`execute(command: string \| Array<string>, callback?: Callback, debug?: boolean): void` | Executes a FFmpeg command. The second argument is an optional callback function (which only returns an error message). If you choose to enable the debug flag, the third argument should be set as `true` and the function will log all events during execution of the commang.
 
 ### Usage
 ```typescript
