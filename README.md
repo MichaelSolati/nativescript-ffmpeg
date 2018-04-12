@@ -1,5 +1,5 @@
 # Nativescript FFmpeg
-[![Build Status](https://travis-ci.org/MichaelSolati/nativeScript-ffmpeg.svg)](https://travis-ci.org/MichaelSolati/nativeScript-ffmpeg) [![npm version](https://badge.fury.io/js/nativescript-ffmpeg.svg)](https://badge.fury.io/js/nativescript-ffmpeg)
+[![Build Status](https://travis-ci.org/MichaelSolati/nativescript-ffmpeg.svg)](https://travis-ci.org/MichaelSolati/nativescript-ffmpeg) [![npm version](https://badge.fury.io/js/nativescript-ffmpeg.svg)](https://badge.fury.io/js/nativescript-ffmpeg)
 
 A Nativescript wrapper for the FFmpeg library. (ONLY SUPPORTS ANDROID)
 
