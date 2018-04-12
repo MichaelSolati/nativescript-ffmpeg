@@ -27,6 +27,10 @@
     "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**'",
     "prepare": "node scripts/prepare.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichaelSolati/nativescript-ffmpeg.git"
+  },
   "keywords": [
     "NativeScript",
     "FFmpeg",

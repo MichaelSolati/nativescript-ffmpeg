@@ -24,6 +24,7 @@ function padding(input: number, length: number = 2): string {
 export class HomeComponent implements OnInit {
   private _compressed: number;
   private _duration: string;
+  private _end: number;
   private _message: string;
   private _original: number;
   private _percent: string;
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit {
     hd: true,
     explanation: "We need to be able to record video"
   });
+  private _start: number;
 
   constructor(private _zone: NgZone) { }
 
@@ -62,20 +64,23 @@ export class HomeComponent implements OnInit {
     const out = src.replace(/\.[^/.]+$/, "_COMPRESSED.mp4");
     const command: string = `-i ${src} -vcodec h264 -preset ultrafast -vf scale=320:240 ${out}`;
     this._message = "Processing video";
-    const start = Date.now();
-    FFmpeg.execute(command, true).then(() => {
-      this._zone.run(() => {
-        const end = Date.now();
-        const elapsed = end - start;
-        const difference = new Date(elapsed);
-        this._duration =
-          `Duration was ${padding(difference.getMinutes())}:${padding(difference.getSeconds())}.${padding(difference.getMilliseconds(), 3)}`
-        this._message = null;
-        this._compressed = this._getSize(out);
-        this._percent = "Reduced by " + (100 - (this._compressed * 100 / this.original)).toFixed(2) + "%";
-      });
-    }).catch(() => this._zone.run(() => this._message = "Couldn't compress video"))
-    .then(() => console.log('done'));
+    this._start = Date.now();
+    FFmpeg.execute(command, (err) => {
+      if (!err) {
+        this._zone.run(() => {
+          this._end = Date.now();
+          const elapsed = this._end - this._start;
+          const difference = new Date(elapsed);
+          this._duration =
+            `Duration was ${padding(difference.getMinutes())}:${padding(difference.getSeconds())}.${padding(difference.getMilliseconds(), 3)}`;
+          this._message = null;
+          this._compressed = this._getSize(out);
+          this._percent = "Reduced by " + (100 - (this._compressed * 100 / this.original)).toFixed(2) + "%";
+        });
+      } else {
+        this._error(err);
+      }
+    }, true);
   }
 
   private _error(error: string | Error): Promise<void> {

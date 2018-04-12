@@ -1,5 +1,5 @@
 # Nativescript FFmpeg
-[![Build Status](https://travis-ci.org/MichaelSolati/nativeScript-ffmpeg.svg?branch=master)](https://travis-ci.org/MichaelSolati/nativeScript-ffmpeg)
+[![Build Status](https://travis-ci.org/MichaelSolati/nativeScript-ffmpeg.svg)](https://travis-ci.org/MichaelSolati/nativeScript-ffmpeg) [![npm version](https://badge.fury.io/js/nativescript-ffmpeg.svg)](https://badge.fury.io/js/nativescript-ffmpeg)
 
 A Nativescript wrapper for the FFmpeg library. (ONLY SUPPORTS ANDROID)
 
@@ -15,11 +15,13 @@ This command automatically installs the necessary files, as well as stores `nati
 
 ## API
 
-### Static Properties
-* **execute** - *string | Array<string>*  
-Executes a FFmpeg command.
+### Static Functions
 
-## Usage
+Function | Description
+-------------- |:---------------------------------
+`execute(command: string | Array<string>, callback?: Callback, debug?: boolean): void` | Executes a FFmpeg command. The second argument is an optional callback function (which only returns an error message). If you choose to enable the debug flag, the third argument should be set as `true` and the function will log all events during execution of the commang.
+
+### Usage
 ```typescript
 import { Component, OnInit } from "@angular/core";
 import { FFmpeg } from "nativescript-ffmpeg";
@@ -52,7 +54,13 @@ export class HomeComponent implements OnInit {
 
   private _compress(src: string): void {
     const out = src.replace(/\.[^/.]+$/, "_COMPRESSED.mp4");
-    FFmpeg.execute(["-i", src, "-vcodec", "h264", "-acodec", "mp3", out]).then(() => console.log("Compressed file size " + this._getSize(out))).catch(this._error);
+    FFmpeg.execute(["-i", src, "-vcodec", "h264", "-acodec", "mp3", out], (err: string) => {
+      if (err) {
+        this._error(err);
+      } else {
+        console.log("Compressed file size " + this._getSize(out));
+      }
+    });
   }
 
   private _error(error: string | Error): Promise<void> {
