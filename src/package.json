@@ -1,6 +1,6 @@
 {
   "name": "nativescript-ffmpeg",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Nativescript wrapper for the FFmpeg library. (ONLY SUPPORTS ANDROID)",
   "main": "ffmpeg",
   "typings": "index.d.ts",
