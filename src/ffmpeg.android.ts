@@ -24,7 +24,10 @@ export class FFmpeg extends Common {
           command.shift();
         }
 
-        if (!ffmpeg.isSupported()) return;
+        if (!ffmpeg.isSupported()) {
+          callback('FFmpeg is not supported by device');
+          return;
+        }
 
         const ExecuteBinaryResponseHandler = bundle.ExecuteBinaryResponseHandler.extend({
           onStart: () => { if (debug) { console.log('Running FFmpeg'); } },
