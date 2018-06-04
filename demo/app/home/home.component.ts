@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit } from "@angular/core";
 import * as Permissions from "nativescript-permissions";
-import { FFmpeg } from "nativescript-ffmpeg";
+import { FFmpeg, FFprobe } from "nativescript-ffmpeg";
 import { isAndroid } from "tns-core-modules/platform";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 
