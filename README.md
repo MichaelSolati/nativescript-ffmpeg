@@ -1,4 +1,5 @@
-# Nativescript FFmpeg
+# nativescript-ffmpeg
+
 [![Build Status](https://travis-ci.org/MichaelSolati/nativescript-ffmpeg.svg)](https://travis-ci.org/MichaelSolati/nativescript-ffmpeg) [![npm version](https://badge.fury.io/js/nativescript-ffmpeg.svg)](https://badge.fury.io/js/nativescript-ffmpeg)
 
 A Nativescript wrapper for the FFmpeg library. (ONLY SUPPORTS ANDROID)
@@ -22,6 +23,7 @@ Function | Description
 `execute(command: string \| Array<string>, callback?: Callback, debug?: boolean): void` | Executes a FFmpeg command. The second argument is an optional callback function (which only returns an error message). If you choose to enable the debug flag, the third argument should be set as `true` and the function will log all events during execution of the commang.
 
 ### Usage
+
 ```typescript
 import { Component, OnInit } from "@angular/core";
 import { FFmpeg } from "nativescript-ffmpeg";
@@ -107,7 +109,7 @@ export class HomeComponent implements OnInit {
 }
 
 ```
-    
+
 ## License
 
 Apache License Version 2.0, January 2004

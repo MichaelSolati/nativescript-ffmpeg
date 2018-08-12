@@ -9,7 +9,7 @@
     "postinstall": "cd src && npm run build && cd ../demo && npm i"
   },
   "devDependencies": {
-    "generate-changelog": "^1.7.0"
+    "generate-changelog": "^1.7.1"
   },
   "repository": {
     "type": "git",
